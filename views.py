@@ -87,4 +87,3 @@ def delete(request):
                 newTopics.append(topic)
         topics = newTopics
         return redirect('/')
-        
