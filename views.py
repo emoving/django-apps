@@ -3,9 +3,9 @@ from django.views.decorators.csrf import csrf_exempt
 
 nextId = 4
 topics = [
-    {'id':1, 'title':'routing', 'body':'Routing is ..'},
-    {'id':2, 'title':'view', 'body':'View is ..'},
-    {'id':3, 'title':'Model', 'body':'Model is ..'},
+    {'id':1, 'title':'Routing', 'body':'Routing is ..'},
+    {'id':2, 'title':'View', 'body':'View is ..'},
+    {'id':3, 'title':'Model', 'body':'Model is ..'}    
 ]
 
 def HTMLTemplate(articleTag, id=None):
@@ -41,7 +41,7 @@ def HTMLTemplate(articleTag, id=None):
 
 def index(request):
     article = '''
-    <h2>Welcome</h2> 
+    <h2>Welcome</h2>
     Hello, Django
     '''
     return HttpResponse(HTMLTemplate(article))
@@ -57,7 +57,7 @@ def read(request, id):
 @csrf_exempt
 def create(request):
     global nextId
-    if request.method == 'GET':
+    if request.method == "GET":
         article = '''
             <form action="/create/" method="post">
                 <p><input type="text" name="title" placeholder="title"></p>
@@ -65,20 +65,21 @@ def create(request):
                 <p><input type="submit"></p>
             </form>
         '''
+        
         return HttpResponse(HTMLTemplate(article))
-    elif request.method == 'POST':
+    elif request.method == "POST":
         title = request.POST['title']
         body = request.POST['body']
         newTopic = {"id":nextId, "title":title, "body":body}
         topics.append(newTopic)
         url = '/read/'+str(nextId)
-        nextId = nextId + 1
+        nextId += 1
         return redirect(url)
 
 @csrf_exempt
 def delete(request):
     global topics
-    if request.method == 'POST':
+    if request.method == "POST":
         id = request.POST['id']
         newTopics = []
         for topic in topics:
@@ -86,3 +87,4 @@ def delete(request):
                 newTopics.append(topic)
         topics = newTopics
         return redirect('/')
+        
